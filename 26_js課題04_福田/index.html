@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>premier Base</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Work+Sans:100" rel="stylesheet">
+
+<body>
+    <h1>Premire Base</h1>
+
+    <p class="p">Weekend Games</p>
+
+    <table id="rank">
+        <thead>
+        <tr align="center">
+        <th width="10%">No</th>
+        <th width="40%">Club</th>
+        <th width="10%">Games</th>
+        <th width="10%">W</th>
+        <th width="10%">D</th>
+        <th width="10%">L</th>
+        <th width="10%">Pts</th>
+        </tr>
+        </thead>
+        <tbody id="league-tbl"></tbody>
+    </table>
+
+    <table id="game">
+        <thead>
+        <tr align="center">
+        <th width="40%">HOME</th>
+        <th width="20%">MatchDay<br />(日本時間)</th>
+        <th width="40%">Away</th>
+        </tr>
+        </thead>
+        <tbody id="matches-tbl" style="margin-bottom: 15px;">
+        </tbody>
+    </table>
+
+
+    
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
+    <!-- js -->
+    <script>
+        $(function() {
+            $.ajaxSetup({
+                headers : {"X-Auth-Token" : ""}
+                });
+            $.getJSON('https://api.football-data.org/v2/competitions/PL/standings?standingType=TOTAL', function (data_PL) {
+                //JSON取得後の処理
+                standings = data_PL.standings[0].table;
+                console.log(standings)
+                // 順位表にデータを挿入
+                standings.forEach(function(standing) {
+            $("#league-tbl").append(
+                '<tr align="center">'
+                + '<td>' + standing.position + '</td>'
+                + '<td>' + '<div style = "text-align: left"><div style="display: table-cell; vertical-align: middle;"><img src="' + standing.team.crestUrl + '" height="24"></div><div style="display: table-cell; vertical-align: middle;">'
+                + standing.team.name + '</div></div></td>'
+                + '<td>' + standing.playedGames + '</td>'
+                + '<td>' + standing.won + '</td>'
+                + '<td>' + standing.draw + '</td>'
+                + '<td>' + standing.lost + '</td>'
+                + '<td>' + standing.points + '</td>'
+                + '</tr>'
+            )
+            });
+            });
+        });
+    </script>
+
+
+
+  <script>
+      $(function() {
+        $.ajaxSetup({
+        headers : {"X-Auth-Token" : ""}
+        });
+        $.getJSON("https://api.football-data.org/v2/competitions/PL/matches?matchday=6", function(data_PL) {
+        //JSON取得後の処理
+        game_list = data_PL.matches;
+        console.log(game_list)
+        games_num = data_PL.count;
+        var youbi = ["日", "月", "火", "水", "木", "金", "土"];
+        var date, jdate;
+        var jtime = "";
+        for (var i = 0; i < games_num; i++) {
+        // 日時を日本時間に変換
+        date = new Date(game_list[i].utcDate);
+        date = date.toLocaleString("ja-JP");
+        jdate = new Date(date);
+        jtime = (jdate.getHours() + ':' + ("0" + jdate.getMinutes()).slice(-2)); 
+        // キックオフ時刻をX:XX表記にする
+        //日程表にデータを挿入
+        $("#matches-tbl").append(
+        '<tr align="center">'
+        + '<td><img src="https://crests.football-data.org/' + game_list[i].homeTeam.id + '.svg" height="30">'
+        + '<br />'
+        + game_list[i].homeTeam.name + '</td>'
+        + '<td class="' + game_list[i].td_class + '">'
+        + (jdate.getMonth() + 1) + '/' + jdate.getDate() + '(' + youbi[jdate.getDay()] + ')'
+        + '<br />' + jtime + '</td>'
+        + '<td><img src="https://crests.football-data.org/' + game_list[i].awayTeam.id + '.svg" height="30">'
+        + '<br />'
+        + game_list[i].awayTeam.name + '</td>'
+        + '</tr>'
+        );
+        }
+        });
+});
+
+
+
+
+
+//     //   API読み込み
+// $(function(){
+//     // API取得
+//     $.ajax({
+//         headers: { 'X-Auth-Token': ''},
+//         url: 'https://api.football-data.org/v2/competitions/PL/matches?String/2021,2022/',
+//         dataType: 'json',
+//         type: 'GET',
+//         }).done(function(response) {
+//         // do something with the response, e.g. isolate the id of a linked resource   
+//         console.log(response);
+//     });
+
+//     // Json取得
+//     $.getJSON("https://api.football-data.org/v2/competitions/PL/matches?matchday=6", function(data){
+//         game_list=data_PL.matches;
+//         console.log(game_list)
+//         games_num=data_L.conunt;
+//         console.log(games_num)
+//     });
+// });
+
+  </script>
+
+
+
+</body>
+</html>

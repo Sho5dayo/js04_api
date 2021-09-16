@@ -1,0 +1,28 @@
+body{
+    background-image: url("https://media.contentapi.ea.com/content/dam/ea/fifa/fifa-21/ratings-collective/common/news/premier-league16x9.png.adapt.crop16x9.575p.png");
+    background-color:rgba(255,255,255,0.9);
+    background-blend-mode:lighten;
+
+}
+
+h1{
+    font-size: 80px;
+    margin-top: 0px;
+}
+
+.p{
+    font-size: 60px;
+    padding-top: 5px;
+}
+
+#game{
+    width:50%;
+    margin: 0 10px;
+    float: left;
+}
+
+#rank{
+    width:45%;
+    margin: 0 1px 0 30px;
+    float: right;
+}
